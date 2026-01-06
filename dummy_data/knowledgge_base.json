@@ -1,0 +1,553 @@
+{
+  "reference_location": {
+    "name": "Al Jafiliya Bus Station 1",
+    "latitude": 25.234790,
+    "longitude": 55.301873,
+    "authority": "Road and Transport Authority Dubai"
+  },
+
+  "restaurants_cafes_bars": [
+    {
+      "id": "food_001",
+      "name": "Zaatar W Zeit",
+      "type": "Restaurant",
+      "cuisine": "Lebanese",
+      "latitude": 25.237120,
+      "longitude": 55.304210,
+      "distance_m": 420,
+      "opening_hours": "08:00 - 23:00",
+      "average_price_aed": 45,
+      "rating": 4.4
+    },
+    {
+      "id": "food_002",
+      "name": "Costa Coffee",
+      "type": "Cafe",
+      "cuisine": "Coffee",
+      "latitude": 25.233980,
+      "longitude": 55.300110,
+      "distance_m": 220,
+      "opening_hours": "06:30 - 22:00",
+      "average_price_aed": 28,
+      "rating": 4.2
+    },
+    {
+      "id": "food_003",
+      "name": "Karachi Darbar",
+      "type": "Restaurant",
+      "cuisine": "Pakistani",
+      "latitude": 25.239540,
+      "longitude": 55.298670,
+      "distance_m": 680,
+      "opening_hours": "24 Hours",
+      "average_price_aed": 35,
+      "rating": 4.1
+    },
+    {
+      "id": "food_004",
+      "name": "Subway",
+      "type": "Fast Food",
+      "cuisine": "Sandwiches",
+      "latitude": 25.232410,
+      "longitude": 55.303920,
+      "distance_m": 360,
+      "opening_hours": "07:00 - 01:00",
+      "average_price_aed": 25,
+      "rating": 4.0
+    },
+    {
+      "id": "food_005",
+      "name": "Al Mallah",
+      "type": "Restaurant",
+      "cuisine": "Arabic",
+      "latitude": 25.238330,
+      "longitude": 55.296810,
+      "distance_m": 740,
+      "opening_hours": "08:00 - 02:00",
+      "average_price_aed": 30,
+      "rating": 4.3
+    },
+    {
+      "id": "food_006",
+      "name": "Starbucks",
+      "type": "Cafe",
+      "cuisine": "Coffee",
+      "latitude": 25.231880,
+      "longitude": 55.299550,
+      "distance_m": 410,
+      "opening_hours": "06:00 - 23:00",
+      "average_price_aed": 32,
+      "rating": 4.5
+    },
+    {
+      "id": "food_007",
+      "name": "Gazebo",
+      "type": "Restaurant",
+      "cuisine": "Indian",
+      "latitude": 25.230740,
+      "longitude": 55.295210,
+      "distance_m": 950,
+      "opening_hours": "11:00 - 23:00",
+      "average_price_aed": 55,
+      "rating": 4.2
+    },
+    {
+      "id": "food_008",
+      "name": "Tim Hortons",
+      "type": "Cafe",
+      "cuisine": "Coffee & Bakery",
+      "latitude": 25.236540,
+      "longitude": 55.307120,
+      "distance_m": 620,
+      "opening_hours": "06:00 - 22:00",
+      "average_price_aed": 27,
+      "rating": 4.1
+    },
+    {
+      "id": "food_009",
+      "name": "Hardee's",
+      "type": "Fast Food",
+      "cuisine": "Burgers",
+      "latitude": 25.229980,
+      "longitude": 55.302310,
+      "distance_m": 510,
+      "opening_hours": "24 Hours",
+      "average_price_aed": 30,
+      "rating": 3.9
+    },
+    {
+      "id": "food_010",
+      "name": "Tea Junction",
+      "type": "Cafe",
+      "cuisine": "Tea & Snacks",
+      "latitude": 25.235670,
+      "longitude": 55.297440,
+      "distance_m": 290,
+      "opening_hours": "07:00 - 21:00",
+      "average_price_aed": 18,
+      "rating": 4.0
+    }
+  ],
+
+  "hotels": [
+    {
+      "id": "hotel_001",
+      "name": "Rove Trade Centre",
+      "star_rating": 3,
+      "latitude": 25.229870,
+      "longitude": 55.294980,
+      "distance_m": 980,
+      "price_range_aed": "250-450",
+      "amenities": ["Free WiFi", "Gym", "Parking"],
+      "rating": 4.6
+    },
+    {
+      "id": "hotel_002",
+      "name": "Ibis World Trade Centre",
+      "star_rating": 3,
+      "latitude": 25.226430,
+      "longitude": 55.289760,
+      "distance_m": 1450,
+      "price_range_aed": "220-400",
+      "amenities": ["Free WiFi", "Restaurant"],
+      "rating": 4.0
+    },
+    {
+      "id": "hotel_003",
+      "name": "Novotel World Trade Centre",
+      "star_rating": 4,
+      "latitude": 25.227110,
+      "longitude": 55.291320,
+      "distance_m": 1350,
+      "price_range_aed": "400-700",
+      "amenities": ["Pool", "Gym", "Business Center"],
+      "rating": 4.4
+    },
+    {
+      "id": "hotel_004",
+      "name": "Chelsea Plaza Hotel",
+      "star_rating": 3,
+      "latitude": 25.241430,
+      "longitude": 55.292810,
+      "distance_m": 1200,
+      "price_range_aed": "200-380",
+      "amenities": ["Free WiFi", "Restaurant"],
+      "rating": 3.8
+    },
+    {
+      "id": "hotel_005",
+      "name": "The Tower Plaza Hotel",
+      "star_rating": 5,
+      "latitude": 25.227920,
+      "longitude": 55.288940,
+      "distance_m": 1600,
+      "price_range_aed": "550-950",
+      "amenities": ["Pool", "Spa", "Gym"],
+      "rating": 4.5
+    },
+    {
+      "id": "hotel_006",
+      "name": "Conrad Dubai",
+      "star_rating": 5,
+      "latitude": 25.228340,
+      "longitude": 55.286770,
+      "distance_m": 1750,
+      "price_range_aed": "700-1200",
+      "amenities": ["Luxury Spa", "Fine Dining", "Pool"],
+      "rating": 4.7
+    },
+    {
+      "id": "hotel_007",
+      "name": "Four Points by Sheraton Sheikh Zayed Road",
+      "star_rating": 4,
+      "latitude": 25.224930,
+      "longitude": 55.285210,
+      "distance_m": 1900,
+      "price_range_aed": "450-800",
+      "amenities": ["Pool", "Gym", "Bar"],
+      "rating": 4.3
+    },
+    {
+      "id": "hotel_008",
+      "name": "Dusit Thani Dubai",
+      "star_rating": 5,
+      "latitude": 25.222710,
+      "longitude": 55.279980,
+      "distance_m": 2400,
+      "price_range_aed": "650-1100",
+      "amenities": ["Spa", "Pool", "Business Lounge"],
+      "rating": 4.6
+    },
+    {
+      "id": "hotel_009",
+      "name": "Emirates Grand Hotel",
+      "star_rating": 4,
+      "latitude": 25.221980,
+      "longitude": 55.282210,
+      "distance_m": 2200,
+      "price_range_aed": "420-750",
+      "amenities": ["Pool", "Kitchenette"],
+      "rating": 4.1
+    },
+    {
+      "id": "hotel_010",
+      "name": "Millennium Plaza Downtown",
+      "star_rating": 5,
+      "latitude": 25.226120,
+      "longitude": 55.287420,
+      "distance_m": 1800,
+      "price_range_aed": "600-1000",
+      "amenities": ["Conference Rooms", "Pool", "Gym"],
+      "rating": 4.4
+    }
+  ],
+
+  "malls": [
+    {
+      "id": "mall_001",
+      "name": "Al Hana Centre",
+      "latitude": 25.233210,
+      "longitude": 55.292540,
+      "distance_m": 820,
+      "store_count": 70,
+      "has_food_court": true,
+      "rating": 3.9
+    },
+    {
+      "id": "mall_002",
+      "name": "City Walk",
+      "latitude": 25.205980,
+      "longitude": 55.261650,
+      "distance_m": 3600,
+      "store_count": 120,
+      "has_food_court": true,
+      "rating": 4.5
+    },
+    {
+      "id": "mall_003",
+      "name": "Oasis Centre",
+      "latitude": 25.230110,
+      "longitude": 55.277430,
+      "distance_m": 2400,
+      "store_count": 90,
+      "has_food_court": true,
+      "rating": 4.2
+    },
+    {
+      "id": "mall_004",
+      "name": "BurJuman",
+      "latitude": 25.254670,
+      "longitude": 55.304320,
+      "distance_m": 2200,
+      "store_count": 160,
+      "has_food_court": true,
+      "rating": 4.4
+    },
+    {
+      "id": "mall_005",
+      "name": "Wafi Mall",
+      "latitude": 25.241020,
+      "longitude": 55.318740,
+      "distance_m": 2100,
+      "store_count": 110,
+      "has_food_court": true,
+      "rating": 4.3
+    },
+    {
+      "id": "mall_006",
+      "name": "The Dubai Mall",
+      "latitude": 25.197230,
+      "longitude": 55.274320,
+      "distance_m": 5200,
+      "store_count": 1200,
+      "has_food_court": true,
+      "rating": 4.8
+    },
+    {
+      "id": "mall_007",
+      "name": "Karama Centre",
+      "latitude": 25.256540,
+      "longitude": 55.303120,
+      "distance_m": 2600,
+      "store_count": 80,
+      "has_food_court": false,
+      "rating": 3.8
+    },
+    {
+      "id": "mall_008",
+      "name": "Souk Al Kabeer",
+      "latitude": 25.258310,
+      "longitude": 55.298120,
+      "distance_m": 2900,
+      "store_count": 150,
+      "has_food_court": false,
+      "rating": 4.0
+    },
+    {
+      "id": "mall_009",
+      "name": "Times Square Center",
+      "latitude": 25.215620,
+      "longitude": 55.260140,
+      "distance_m": 4100,
+      "store_count": 100,
+      "has_food_court": true,
+      "rating": 4.1
+    },
+    {
+      "id": "mall_010",
+      "name": "Mercato Shopping Mall",
+      "latitude": 25.219840,
+      "longitude": 55.248670,
+      "distance_m": 5200,
+      "store_count": 140,
+      "has_food_court": true,
+      "rating": 4.2
+    }
+  ],
+
+  "mosques": [
+    {
+      "id": "mosque_001",
+      "name": "Jafiliya Mosque",
+      "latitude": 25.236880,
+      "longitude": 55.297420,
+      "distance_m": 350,
+      "capacity": 800,
+      "prayer_facilities": ["Men", "Women"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_002",
+      "name": "Masjid Al Wasl",
+      "latitude": 25.229310,
+      "longitude": 55.305980,
+      "distance_m": 1100,
+      "capacity": 1200,
+      "prayer_facilities": ["Men", "Women"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_003",
+      "name": "Al Mankhool Mosque",
+      "latitude": 25.253210,
+      "longitude": 55.291880,
+      "distance_m": 2400,
+      "capacity": 1500,
+      "prayer_facilities": ["Men", "Women"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_004",
+      "name": "Al Farooq Mosque",
+      "latitude": 25.216340,
+      "longitude": 55.273540,
+      "distance_m": 3500,
+      "capacity": 2000,
+      "prayer_facilities": ["Men", "Women"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_005",
+      "name": "Satwa Mosque",
+      "latitude": 25.232980,
+      "longitude": 55.283210,
+      "distance_m": 2100,
+      "capacity": 900,
+      "prayer_facilities": ["Men"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_006",
+      "name": "Al Badaa Mosque",
+      "latitude": 25.222110,
+      "longitude": 55.265420,
+      "distance_m": 3900,
+      "capacity": 700,
+      "prayer_facilities": ["Men", "Women"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_007",
+      "name": "Al Huda Mosque",
+      "latitude": 25.240980,
+      "longitude": 55.309320,
+      "distance_m": 1600,
+      "capacity": 600,
+      "prayer_facilities": ["Men"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_008",
+      "name": "Karama Grand Mosque",
+      "latitude": 25.255430,
+      "longitude": 55.301120,
+      "distance_m": 2600,
+      "capacity": 2500,
+      "prayer_facilities": ["Men", "Women"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_009",
+      "name": "Al Mina Mosque",
+      "latitude": 25.247620,
+      "longitude": 55.269840,
+      "distance_m": 4400,
+      "capacity": 1000,
+      "prayer_facilities": ["Men"],
+      "friday_khutbah": true
+    },
+    {
+      "id": "mosque_010",
+      "name": "Sheikh Rashid Mosque",
+      "latitude": 25.243120,
+      "longitude": 55.287210,
+      "distance_m": 1900,
+      "capacity": 1800,
+      "prayer_facilities": ["Men", "Women"],
+      "friday_khutbah": true
+    }
+  ],
+
+  "atms_money_exchanges": [
+    {
+      "id": "finance_001",
+      "name": "Emirates NBD ATM",
+      "type": "ATM",
+      "latitude": 25.234120,
+      "longitude": 55.302910,
+      "distance_m": 120,
+      "available_24h": true,
+      "services": ["Cash Withdrawal", "Balance Inquiry"]
+    },
+    {
+      "id": "finance_002",
+      "name": "Al Ansari Exchange",
+      "type": "Money Exchange",
+      "latitude": 25.232540,
+      "longitude": 55.299340,
+      "distance_m": 310,
+      "available_24h": false,
+      "services": ["Currency Exchange", "Remittance"]
+    },
+    {
+      "id": "finance_003",
+      "name": "UAE Exchange",
+      "type": "Money Exchange",
+      "latitude": 25.238110,
+      "longitude": 55.296980,
+      "distance_m": 640,
+      "available_24h": false,
+      "services": ["Currency Exchange"]
+    },
+    {
+      "id": "finance_004",
+      "name": "Mashreq ATM",
+      "type": "ATM",
+      "latitude": 25.231210,
+      "longitude": 55.304780,
+      "distance_m": 480,
+      "available_24h": true,
+      "services": ["Cash Withdrawal"]
+    },
+    {
+      "id": "finance_005",
+      "name": "Dubai Islamic Bank ATM",
+      "type": "ATM",
+      "latitude": 25.236780,
+      "longitude": 55.298120,
+      "distance_m": 350,
+      "available_24h": true,
+      "services": ["Cash Withdrawal"]
+    },
+    {
+      "id": "finance_006",
+      "name": "Lulu Exchange",
+      "type": "Money Exchange",
+      "latitude": 25.253980,
+      "longitude": 55.301210,
+      "distance_m": 2300,
+      "available_24h": false,
+      "services": ["Currency Exchange", "Remittance"]
+    },
+    {
+      "id": "finance_007",
+      "name": "Western Union",
+      "type": "Money Transfer",
+      "latitude": 25.229430,
+      "longitude": 55.292980,
+      "distance_m": 1050,
+      "available_24h": false,
+      "services": ["International Remittance"]
+    },
+    {
+      "id": "finance_008",
+      "name": "ADCB ATM",
+      "type": "ATM",
+      "latitude": 25.227980,
+      "longitude": 55.288210,
+      "distance_m": 1650,
+      "available_24h": true,
+      "services": ["Cash Withdrawal"]
+    },
+    {
+      "id": "finance_009",
+      "name": "Sharaf Exchange",
+      "type": "Money Exchange",
+      "latitude": 25.256780,
+      "longitude": 55.304210,
+      "distance_m": 2700,
+      "available_24h": false,
+      "services": ["Currency Exchange"]
+    },
+    {
+      "id": "finance_010",
+      "name": "RAKBANK ATM",
+      "type": "ATM",
+      "latitude": 25.221120,
+      "longitude": 55.280980,
+      "distance_m": 2400,
+      "available_24h": true,
+      "services": ["Cash Withdrawal", "Mini Statement"]
+    }
+  ]
+}
