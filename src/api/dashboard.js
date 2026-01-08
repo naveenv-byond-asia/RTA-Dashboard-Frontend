@@ -1,6 +1,6 @@
 import { csvParse } from "d3";
 import conversationsCsvUrl from "../../dummy_data/data/conversations.csv?url";
-import knowledgeBase from "../../dummy_data/knowledgge_base.json";
+import knowledgeBase from "../../dummy_data/knowledge_base.json";
 
 function formatNumber(value) {
   return new Intl.NumberFormat("en-US").format(value);
@@ -82,13 +82,29 @@ function extractBusRoutes(text) {
 }
 
 export function buildDashboardData(rows) {
+  const categoryLabels = [
+    "Mobility & Access",
+    "Food & Beverages",
+    "Retail & Lifestyle",
+    "Health, Fitness & Education",
+    "Services & Utilities",
+    "Entertainment, Leisure & Stay",
+  ];
+  const personaByCategory = {
+    "Mobility & Access": "commuters, parking, work routes",
+    "Food & Beverages": "food seekers, quick bites",
+    "Retail & Lifestyle": "shoppers, retail stops",
+    "Health, Fitness & Education": "students, clinics, gyms",
+    "Services & Utilities": "ATMs, exchanges, daily services",
+    "Entertainment, Leisure & Stay": "tourists, hotels, leisure",
+  };
   const total = rows.length;
   const withAnswers = rows.filter((row) => row.assistant_answer?.trim()).length;
   const uniqueLocations = new Set(rows.map((row) => row.location)).size;
-  const avgLatency =
-    rows.reduce((sum, row) => sum + Number(row.latency_ms || 0), 0) /
-    Math.max(total, 1);
-
+  const happyCount = rows.filter(
+    (row) => (row.csat || "").toLowerCase() === "happy"
+  ).length;
+  const happyPercent = Math.round((happyCount / Math.max(total, 1)) * 100);
   const metrics = [
     { label: "Total Conversations", value: formatNumber(total), delta: "Last 30d" },
     {
@@ -102,26 +118,40 @@ export function buildDashboardData(rows) {
       delta: "Active destinations",
     },
     {
-      label: "Avg Response Latency",
-      value: `${Math.round(avgLatency)} ms`,
-      delta: "Median target 1500 ms",
+      label: "Customer Satisfaction",
+      value: `${happyPercent}%`,
+      delta: "Happy Users",
+      deltaClass: "info",
     },
   ];
 
   const byDate = new Map();
   const byHour = new Array(24).fill(0);
+  const byServiceHour = new Array(24).fill(0);
+  const byRestaurantHour = new Array(24).fill(0);
   const byCategory = new Map();
   const byLocation = new Map();
   const byRoute = new Map();
   const locationCategories = new Map();
+  const rowsByHour = new Map();
 
   rows.forEach((row) => {
     const dateKey = row.date;
     byDate.set(dateKey, (byDate.get(dateKey) || 0) + 1);
 
     const hour = Number((row.time || "0:0").split(":")[0]);
-    if (!Number.isNaN(hour)) {
+    if (!Number.isNaN(hour) && hour >= 0 && hour <= 23) {
       byHour[hour] += 1;
+      if (!rowsByHour.has(hour)) {
+        rowsByHour.set(hour, []);
+      }
+      rowsByHour.get(hour).push(row);
+      if (row.category === "Services & Utilities") {
+        byServiceHour[hour] += 1;
+      }
+      if (row.category === "Food & Beverages") {
+        byRestaurantHour[hour] += 1;
+      }
     }
 
     byCategory.set(row.category, (byCategory.get(row.category) || 0) + 1);
@@ -150,12 +180,74 @@ export function buildDashboardData(rows) {
     data: byHour,
   };
 
-  const topCategories = [...byCategory.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6);
+  const categoryHourly = {
+    labels: peakHours.labels,
+    serviceUtilities: byServiceHour,
+    restaurants: byRestaurantHour,
+  };
+
+  const percentOfTotal = (value) =>
+    Math.round((value / Math.max(total, 1)) * 100);
+
+  const lateNightHours = new Set([22, 23, 0, 1, 2]);
+  const lateNightCount = [...lateNightHours].reduce(
+    (sum, hour) => sum + (rowsByHour.get(hour)?.length || 0),
+    0
+  );
+
+  const foodCount = byCategory.get("Food & Beverages") || 0;
+  const worshipCount = rows.filter(
+    (row) =>
+      (row.sub_category || "").toLowerCase() === "religious services" ||
+      row.category === "Services & Utilities"
+  ).length;
+  const shopperCount = byCategory.get("Retail & Lifestyle") || 0;
+  const touristCount = byCategory.get("Entertainment, Leisure & Stay") || 0;
+
+  const dinnerWindowHours = [19, 20, 21];
+  const dinnerRows = dinnerWindowHours.flatMap(
+    (hour) => rowsByHour.get(hour) || []
+  );
+  const dinnerFoodCount = dinnerRows.filter(
+    (row) => row.category === "Food & Beverages"
+  ).length;
+  const dinnerFoodPercent = Math.round(
+    (dinnerFoodCount / Math.max(dinnerRows.length, 1)) * 100
+  );
+
+  const categoryCountsForHours = (hours) => {
+    const counts = new Map(categoryLabels.map((label) => [label, 0]));
+    hours.forEach((hour) => {
+      (rowsByHour.get(hour) || []).forEach((row) => {
+        const label = row.category;
+        if (counts.has(label)) {
+          counts.set(label, counts.get(label) + 1);
+        }
+      });
+    });
+    return counts;
+  };
+
+  const topCategoryForHours = (hours) => {
+    const counts = categoryCountsForHours(hours);
+    let topLabel = categoryLabels[0];
+    let topValue = -1;
+    counts.forEach((value, label) => {
+      if (value > topValue) {
+        topValue = value;
+        topLabel = label;
+      }
+    });
+    return topLabel;
+  };
+
+  const morningTop = topCategoryForHours([6, 7, 8, 9, 10, 11]);
+  const afternoonTop = topCategoryForHours([12, 13, 14, 15, 16, 17]);
+  const eveningTop = topCategoryForHours([18, 19, 20, 21, 22, 23]);
+
   const placeTypeBreakdown = {
-    labels: topCategories.map(([label]) => label),
-    data: topCategories.map(([, count]) => count),
+    labels: categoryLabels,
+    data: categoryLabels.map((label) => byCategory.get(label) || 0),
   };
 
   const topLocations = [...byLocation.entries()]
@@ -176,6 +268,47 @@ export function buildDashboardData(rows) {
       latency: `${avgLatencyMs} ms`,
     };
   });
+
+  const adTypeForCategory = (category) => {
+    switch (category) {
+      case "Food & Beverages":
+        return "cafe sponsorship opportunity";
+      case "Retail & Lifestyle":
+        return "retail sponsorship opportunity";
+      case "Services & Utilities":
+        return "banking or exchange sponsorship opportunity";
+      case "Entertainment, Leisure & Stay":
+        return "hotel or leisure sponsorship opportunity";
+      case "Mobility & Access":
+        return "mobility services sponsorship opportunity";
+      case "Health, Fitness & Education":
+        return "clinic or education sponsorship opportunity";
+      default:
+        return "local sponsorship opportunity";
+    }
+  };
+
+  const audienceIntelligence = {
+    intentStatement: `${dinnerFoodPercent}% of users between 7-9pm are looking for food nearby.`,
+    intentSegments: {
+      foodSeekers: percentOfTotal(foodCount),
+      worshippers: percentOfTotal(worshipCount),
+      shoppers: percentOfTotal(shopperCount),
+      tourists: percentOfTotal(touristCount),
+      lateNightUsers: percentOfTotal(lateNightCount),
+    },
+    timeOfDayPersona: {
+      morning: `Morning: ${personaByCategory[morningTop]}.`,
+      afternoon: `Afternoon: ${personaByCategory[afternoonTop]}.`,
+      evening: `Evening: ${personaByCategory[eveningTop]}.`,
+    },
+    conversionPotential: locationRows.slice(0, 3).map((row) => ({
+      location: row.location,
+      statement: `${row.location} appears in top queries -> ${adTypeForCategory(
+        row.category
+      )}.`,
+    })),
+  };
 
   const jafiliyaRows = rows.filter((row) =>
     row.user_question?.toLowerCase().includes("al jafiliya")
@@ -252,10 +385,12 @@ export function buildDashboardData(rows) {
   return {
     metrics,
     peakHours,
+    categoryHourly,
     dailyTraffic,
     placeTypeBreakdown,
     locationRows,
     busRouteRows: topRoutes,
+    audienceIntelligence,
     heatmapPoints,
     hubSpoke: {
       hub: "Al Jafiliya",

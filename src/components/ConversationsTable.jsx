@@ -1,7 +1,7 @@
 export default function ConversationsTable({ rows }) {
   return (
     <div className="panel wide">
-      <strong>Top 50 Conversations</strong>
+      <strong>Conversations</strong>
       <div className="table-scroll">
         <table className="routes-table">
           <thead>

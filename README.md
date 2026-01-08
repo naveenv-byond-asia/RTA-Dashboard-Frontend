@@ -22,6 +22,7 @@ Then open the local URL printed by Vite (usually `http://localhost:5173`).
 
 ```bash
 python dummy_data/generate_dummy_conversations.py \
+  --knowledge-base dummy_data/knowledge_base.json \
   --count 400 \
   --csv-output dummy_data/data/conversations.csv \
   --json-output dummy_data/data/conversations.json
@@ -35,4 +36,3 @@ source .venv/bin/activate
 pip install django
 python backend/manage.py runserver
 ```
-

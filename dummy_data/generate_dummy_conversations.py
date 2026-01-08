@@ -21,11 +21,11 @@ SYSTEM_PROMPT = (
     """
 You are an AI-powered digital avatar deployed by the Roads and Transport Authority Dubai and stationed at Al Jafiliya Bus Station 1. Your primary role is to assist commuters, visitors, and residents with nearby location-based information, guidance, and general enquiries in a helpful, accurate, and human manner.
 
-You must always use the attached JSON knowledge base as your single source of truth when answering any question related to nearby places, including but not limited to restaurants, cafes, hotels, malls, mosques, ATMs, and money exchange services. You are not allowed to invent locations, guess details, or reference places that are not present in the provided JSON. If a user asks for information that does not exist in the knowledge base, you should politely say that you do not currently have that information and offer the closest relevant alternative from the data you do have.
+You are not limited to the attached JSON knowledge base. You may invent plausible nearby places around Al Jafiliya when needed, including realistic distances and characteristics. When inventing a place, ensure it sounds local and credible.
 
-You should reason internally over the JSON data to determine proximity, relevance, distance, and suitability based on the user’s request. For example, if a user asks for something “nearby,” you should prioritize entries with the shortest distance. If a user asks for something “open late,” you should consider opening hours. If a user asks for affordability, consider average price ranges. Your answers should feel intelligent and situational, not robotic or templated.
+You should reason internally over the JSON data or your invented entries to determine proximity, relevance, distance, and suitability based on the user’s request. For example, if a user asks for something “nearby,” you should prioritize entries with the shortest distance. If a user asks for something “open late,” you should consider opening hours. If a user asks for affordability, consider average price ranges. Your answers should feel intelligent and situational, not robotic or templated.
 
-Your responses must always sound natural, conversational, and human, as if a friendly and knowledgeable local person is speaking. You should never sound like you are reading from a database, never mention JSON, datasets, schemas, or internal structures, and never expose raw data formats. Speak in complete sentences, vary your phrasing, and adapt your tone to feel warm, calm, and approachable. Do not use bullet points, numbered lists, headings, symbols, or markdown of any kind. Every response should read like normal spoken language.
+Your responses must always sound natural, conversational, and human, as if a friendly and knowledgeable local person is speaking. You should never sound like you are reading from a database, never mention JSON, datasets, schemas, or internal structures, and never expose raw data formats. Speak in complete sentences, vary your phrasing, and adapt your tone to feel warm, calm, and approachable. When you mention a specific place, include its latitude and longitude and its category and subcategory in-line as part of the sentence. Do not use bullet points, numbered lists, headings, symbols, or markdown of any kind. Every response should read like normal spoken language.
 
 You should proactively help users by gently suggesting relevant follow-up information when appropriate. For example, if someone asks for a restaurant, you may naturally mention how far it is or what kind of food it serves. If someone asks for a mosque, you may mention whether it is suitable for Friday prayers if that information exists. Keep suggestions subtle and helpful, never overwhelming.
 
@@ -98,6 +98,50 @@ ATM_EXCHANGE_CATEGORIES = {
     "atms_money_exchange",
     "atms_money_exchanges",
 }
+
+CATEGORY_TAXONOMY = {
+    "Mobility & Access": [
+        "Parking",
+        "Transportation",
+        "Automotive",
+        "Public Facilities",
+    ],
+    "Food & Beverages": [
+        "Local Cuisine",
+        "Fast Food",
+        "Coffee & Beverages",
+        "Desserts & Bakery",
+        "Food Court",
+        "Bars & Nightlife",
+    ],
+    "Retail & Lifestyle": [
+        "Clothing & Fashion",
+        "Beauty & Personal Care",
+        "Grocery & Convenience",
+        "Electronics & Technology",
+        "Furniture & Home",
+        "Retail & Shopping",
+    ],
+    "Health, Fitness & Education": [
+        "Medical & Health",
+        "Sports & Fitness",
+        "Education",
+    ],
+    "Services & Utilities": [
+        "Banking & Financial",
+        "Laundry Services",
+        "Religious Services",
+        "Event Services",
+        "Other Services",
+        "Services",
+    ],
+    "Entertainment, Leisure & Stay": [
+        "Recreation & Entertainment",
+        "Entertainment & Media",
+        "Accommodation",
+    ],
+}
+CSAT_OPTIONS = [("happy", 0.75), ("neutral", 0.15), ("sad", 0.10)]
 
 
 def call_lmstudio(
@@ -263,6 +307,31 @@ def group_for_category(category: str) -> str:
     return "other"
 
 
+def pick_taxonomy_for_category(category: str) -> Tuple[str, str]:
+    key = (category or "").lower()
+    if key in RESTAURANT_CATEGORIES:
+        parent = "Food & Beverages"
+        return parent, random.choice(CATEGORY_TAXONOMY[parent])
+    if key in MOSQUE_CATEGORIES:
+        return "Services & Utilities", "Religious Services"
+    if key in MALL_CATEGORIES:
+        parent = "Retail & Lifestyle"
+        return parent, random.choice(CATEGORY_TAXONOMY[parent])
+    if key in HOTEL_CATEGORIES:
+        return "Entertainment, Leisure & Stay", "Accommodation"
+    if key in ATM_EXCHANGE_CATEGORIES:
+        return "Services & Utilities", "Banking & Financial"
+
+    parent = random.choice(list(CATEGORY_TAXONOMY.keys()))
+    return parent, random.choice(CATEGORY_TAXONOMY[parent])
+
+
+def pick_csat() -> str:
+    labels = [label for label, _ in CSAT_OPTIONS]
+    weights = [weight for _, weight in CSAT_OPTIONS]
+    return random.choices(labels, weights=weights, k=1)[0]
+
+
 def pick_category(
     timestamp: datetime, categories_by_group: Dict[str, List[str]]
 ) -> str:
@@ -356,8 +425,9 @@ def generate_conversations(
     total = count if count > 0 else len(locations)
     for idx in range(total):
         created_at = random_timestamp()
-        category = pick_category(created_at, categories_by_group)
-        category_locations = locations_by_category.get(category)
+        kb_category = pick_category(created_at, categories_by_group)
+        category, sub_category = pick_taxonomy_for_category(kb_category)
+        category_locations = locations_by_category.get(kb_category)
         if not category_locations:
             fallback = [
                 location
@@ -367,14 +437,16 @@ def generate_conversations(
             location = random.choice(fallback)
         else:
             location = random.choice(category_locations)
-        question = build_question_for_time(category, location, created_at)
-        prompt = build_answer_prompt(question, category, location)
+        question = build_question_for_time(kb_category, location, created_at)
+        prompt = build_answer_prompt(question, kb_category, location)
         answer, latency_ms = call_lmstudio(base_url, model, prompt, temperature)
         if random.random() < MISSING_ANSWER_RATE:
             answer = ""
         conv = {
             "id": f"conv_{seed}_{idx}",
             "category": category,
+            "sub_category": sub_category,
+            "csat": pick_csat(),
             "location": location.get("name"),
             "messages": [
                 {"role": "user", "content": question},
@@ -411,6 +483,8 @@ def write_csv(path: str, conversations: List[Dict[str, Any]]) -> None:
     fieldnames = [
         "id",
         "category",
+        "sub_category",
+        "csat",
         "location",
         "user_question",
         "assistant_answer",
@@ -430,6 +504,8 @@ def write_csv(path: str, conversations: List[Dict[str, Any]]) -> None:
                 {
                     "id": conv.get("id", ""),
                     "category": conv.get("category", ""),
+                    "sub_category": conv.get("sub_category", ""),
+                    "csat": conv.get("csat", ""),
                     "location": conv.get("location", ""),
                     "user_question": user_msg,
                     "assistant_answer": assistant_msg,

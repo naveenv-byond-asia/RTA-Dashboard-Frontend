@@ -219,6 +219,10 @@ p {
   color: var(--accent-deep);
 }
 
+.metric-card em.info {
+  color: var(--accent);
+}
+
 .metric-card em.negative {
   color: var(--accent);
 }

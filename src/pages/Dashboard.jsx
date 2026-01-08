@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { buildDashboardData, loadDashboardData } from "../api/dashboard.js";
 import BusRoutesTable from "../components/BusRoutesTable.jsx";
-import ConversationsTable from "../components/ConversationsTable.jsx";
+import AudienceIntelligenceLayer from "../components/AudienceIntelligenceLayer.jsx";
+import CategoryHourlyArea from "../components/CategoryHourlyArea.jsx";
 import DailyTrafficLine from "../components/DailyTrafficLine.jsx";
 import FrequentRoutesTable from "../components/FrequentRoutesTable.jsx";
 import HubSpokeDiagram from "../components/HubSpokeDiagram.jsx";
@@ -156,6 +157,13 @@ export default function Dashboard() {
         <LocationHeatMap data={dashboard.heatmapPoints} />
       </section>
 
+      <AudienceIntelligenceLayer
+        intentStatement={dashboard.audienceIntelligence.intentStatement}
+        intentSegments={dashboard.audienceIntelligence.intentSegments}
+        timeOfDayPersona={dashboard.audienceIntelligence.timeOfDayPersona}
+        conversionPotential={dashboard.audienceIntelligence.conversionPotential}
+      />
+
       <section className="panel-grid">
         <FrequentRoutesTable rows={dashboard.busRouteRows} />
         <BusRoutesTable rows={dashboard.locationRows} />
@@ -170,7 +178,11 @@ export default function Dashboard() {
       </section>
 
       <section className="panel-grid">
-        <ConversationsTable rows={dashboard.conversations} />
+        <CategoryHourlyArea
+          labels={dashboard.categoryHourly.labels}
+          serviceData={dashboard.categoryHourly.serviceUtilities}
+          restaurantData={dashboard.categoryHourly.restaurants}
+        />
       </section>
     </main>
   );
